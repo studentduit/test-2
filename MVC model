@@ -1,0 +1,94 @@
+#include <iostream>
+#include <string>
+
+// Модель (Model)
+class User {
+private:
+    std::string name;
+    int age;
+
+public:
+    User(const std::string& name, int age) : name(name), age(age) {}
+
+    std::string getName() const {
+        return name;
+    }
+
+    int getAge() const {
+        return age;
+    }
+
+    void setName(const std::string& newName) {
+        name = newName;
+    }
+
+    void setAge(int newAge) {
+        age = newAge;
+    }
+};
+
+// Представлення (View)
+class View {
+public:
+    void displayUser(const std::string& name, int age) {
+        std::cout << "User: " << name << ", Age: " << age << std::endl;
+    }
+
+    void askForName() {
+        std::cout << "Enter new user name: ";
+    }
+
+    void askForAge() {
+        std::cout << "Enter new user age: ";
+    }
+};
+
+// Контролер (Controller)
+class Controller {
+private:
+    User* model;
+    View* view;
+
+public:
+    Controller(User* model, View* view) : model(model), view(view) {}
+
+    void displayUserInfo() {
+        view->displayUser(model->getName(), model->getAge());
+    }
+
+    void updateUser() {
+        std::string newName;
+        int newAge;
+
+        view->askForName();
+        std::cin >> newName;
+
+        view->askForAge();
+        std::cin >> newAge;
+
+        model->setName(newName);
+        model->setAge(newAge);
+    }
+};
+
+int main() {
+    // Створюємо модель
+    User user("John Doe", 30);
+
+    // Створюємо уявлення
+    View view;
+
+    // Створюємо контролер
+    Controller controller(&user, &view);
+
+    // Виводимо інформацію про користувача
+    controller.displayUserInfo();
+
+    // Оновлюємо інформацію про користувача
+    controller.updateUser();
+
+    // Знову виводимо оновлену інформацію
+    controller.displayUserInfo();
+
+    return 0;
+}
